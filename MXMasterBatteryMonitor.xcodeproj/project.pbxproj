@@ -11,6 +11,8 @@
 		9121D3591EE4B7E700575C26 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9121D3581EE4B7E700575C26 /* ViewController.swift */; };
 		9121D35B1EE4B7E700575C26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9121D35A1EE4B7E700575C26 /* Assets.xcassets */; };
 		9121D35E1EE4B7E700575C26 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9121D35C1EE4B7E700575C26 /* Main.storyboard */; };
+		9121D3661EE4BAA700575C26 /* StatusMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9121D3651EE4BAA700575C26 /* StatusMenuController.swift */; };
+		9121D3681EE4BD6E00575C26 /* MXMasterAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9121D3671EE4BD6E00575C26 /* MXMasterAPI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +22,8 @@
 		9121D35A1EE4B7E700575C26 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9121D35D1EE4B7E700575C26 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9121D35F1EE4B7E700575C26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9121D3651EE4BAA700575C26 /* StatusMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusMenuController.swift; sourceTree = "<group>"; };
+		9121D3671EE4BD6E00575C26 /* MXMasterAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MXMasterAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,9 +57,11 @@
 			isa = PBXGroup;
 			children = (
 				9121D3561EE4B7E700575C26 /* AppDelegate.swift */,
+				9121D3651EE4BAA700575C26 /* StatusMenuController.swift */,
 				9121D3581EE4B7E700575C26 /* ViewController.swift */,
 				9121D35A1EE4B7E700575C26 /* Assets.xcassets */,
 				9121D35C1EE4B7E700575C26 /* Main.storyboard */,
+				9121D3671EE4BD6E00575C26 /* MXMasterAPI.swift */,
 				9121D35F1EE4B7E700575C26 /* Info.plist */,
 			);
 			path = MXMasterBatteryMonitor;
@@ -133,8 +139,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9121D3661EE4BAA700575C26 /* StatusMenuController.swift in Sources */,
 				9121D3591EE4B7E700575C26 /* ViewController.swift in Sources */,
 				9121D3571EE4B7E700575C26 /* AppDelegate.swift in Sources */,
+				9121D3681EE4BD6E00575C26 /* MXMasterAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
