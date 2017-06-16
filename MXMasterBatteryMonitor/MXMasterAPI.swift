@@ -14,11 +14,16 @@ class MXMasterBluetoothAPI: NSObject, CBCentralManagerDelegate, CBPeripheralDele
     
     var savedPeripheral:CBPeripheral?
     var manager: CBCentralManager!
+    var delegate: CBCentralManagerDelegate?
     
+    private(set) var connectedPeripheral : CBPeripheral?
+    private(set) var connectedServices : [CBService]?
     
     required override init(){
         super.init()
-        manager = CBCentralManager(delegate: self, queue: DispatchQueue.main)
+        var dic : [String : Any] = Dictionary()
+        dic[CBCentralManagerOptionShowPowerAlertKey] = false
+        manager = CBCentralManager(delegate: self, queue: nil, options: dic)
     }
     
     func getIcon(forValue: Int) -> NSImage? {
@@ -54,7 +59,7 @@ class MXMasterBluetoothAPI: NSObject, CBCentralManagerDelegate, CBPeripheralDele
         //manager?.scanForPeripherals(withServices: nil, options: nil)
         //var periferals = manager?.retrieveConnectedPeripherals(withServices: [])
         var periferals = manager?.retrievePeripherals(withIdentifiers: [MXMaster!])
-        manager?.connect(periferals![0], options: nil)
+        manager?.connect(periferals![0], options: [CBConnectPeripheralOptionNotifyOnDisconnectionKey : true])
         print(periferals);
         print("")
         
@@ -85,9 +90,11 @@ class MXMasterBluetoothAPI: NSObject, CBCentralManagerDelegate, CBPeripheralDele
     }
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         // pass reference to connected peripheral to parentview
+        
         savedPeripheral = peripheral
-        savedPeripheral!.discoverServices( nil)
-        // set manager's delegate view to parent so it can call relevant disconnect methods
+        savedPeripheral!.delegate=self
+        savedPeripheral!.discoverServices(nil)
+        
         print("connected!")
         print(savedPeripheral as Any)
         
