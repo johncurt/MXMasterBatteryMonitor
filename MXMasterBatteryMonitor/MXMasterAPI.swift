@@ -12,7 +12,7 @@ import CoreBluetooth
 
 class MXMasterBluetoothAPI: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
-    var peripherals:[CBPeripheral] = []
+    var savedPeripheral:CBPeripheral?
     var manager: CBCentralManager!
     
     
@@ -74,9 +74,6 @@ class MXMasterBluetoothAPI: NSObject, CBCentralManagerDelegate, CBPeripheralDele
         print("Peripheral found!")
         print(advertisementData)
         
-        if (!peripherals.contains(peripheral)){
-            peripherals.append(peripheral)
-        }
     }
     func centralManager(_ central: CBCentralManager, didRetrieveConnectedPeripherals peripherals: [CBPeripheral]) {
         print("Got something")
@@ -88,10 +85,11 @@ class MXMasterBluetoothAPI: NSObject, CBCentralManagerDelegate, CBPeripheralDele
     }
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         // pass reference to connected peripheral to parentview
-        peripheral.discoverServices( nil)
+        savedPeripheral = peripheral
+        savedPeripheral!.discoverServices( nil)
         // set manager's delegate view to parent so it can call relevant disconnect methods
         print("connected!")
-        print(peripheral)
+        print(savedPeripheral as Any)
         
     }
     
