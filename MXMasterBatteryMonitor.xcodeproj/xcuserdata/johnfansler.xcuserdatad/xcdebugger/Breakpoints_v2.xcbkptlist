@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MXMasterBatteryMonitor/StatusMenuController.swift"
+            timestampString = "524211078.364964"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "17"
+            endingLineNumber = "17"
+            landmarkName = "StatusMenuController"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MXMasterBatteryMonitor.StatusMenuController.(statusItem : __ObjC.NSStatusItem).(variable initialization expression)"
+                  moduleName = "MXMasterBatteryMonitor"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/johnfansler/Downloads/MXMasterBatteryMonitor-master/MXMasterBatteryMonitor/StatusMenuController.swift"
+                  timestampString = "524211263.427579"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17"
+                  offsetFromSymbolStart = "4">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MXMasterBatteryMonitor.StatusMenuController.statusItem.getter : __ObjC.NSStatusItem"
+                  moduleName = "MXMasterBatteryMonitor"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/johnfansler/Downloads/MXMasterBatteryMonitor-master/MXMasterBatteryMonitor/StatusMenuController.swift"
+                  timestampString = "524211263.430893"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17"
+                  offsetFromSymbolStart = "35">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MXMasterBatteryMonitor.StatusMenuController.init () -&gt; MXMasterBatteryMonitor.StatusMenuController"
+                  moduleName = "MXMasterBatteryMonitor"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/johnfansler/Downloads/MXMasterBatteryMonitor-master/MXMasterBatteryMonitor/StatusMenuController.swift"
+                  timestampString = "524211263.432446"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17"
+                  offsetFromSymbolStart = "90">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

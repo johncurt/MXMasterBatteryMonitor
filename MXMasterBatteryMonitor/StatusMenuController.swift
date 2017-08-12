@@ -26,9 +26,10 @@ class StatusMenuController: NSObject {
     override func awakeFromNib() {
         
         let icon = MXMaster.getIcon(forValue: 1)
-        MXMaster.scanBLEDevice()
+        //MXMaster.scanBLEDevice()
         statusItem.image = icon
         statusItem.menu = statusMenu
+        MXMaster.setStatusItem(menu: statusItem)
     }
 
 }

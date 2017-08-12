@@ -10,6 +10,11 @@ import Foundation
 import Cocoa
 import CoreBluetooth
 
+let MXMasterBatteryService = CBUUID(string: "180F")
+let MXMasterBatteryCharacteristic = CBUUID(string: "2A19")
+let MXMasterService = CBUUID(string: "00010000-0000-1000-8000-011F2000046D")
+let MXMasterService2 = CBUUID(string: "0F0A93FE-0AF3-433B-B702-9FD910375C4C")
+
 class MXMasterBluetoothAPI: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     var savedPeripheral:CBPeripheral?
@@ -19,14 +24,14 @@ class MXMasterBluetoothAPI: NSObject, CBCentralManagerDelegate, CBPeripheralDele
     private(set) var connectedPeripheral : CBPeripheral?
     private(set) var connectedServices : [CBService]?
     
-    required override init(){
-        super.init()
-        var dic : [String : Any] = Dictionary()
-        dic[CBCentralManagerOptionShowPowerAlertKey] = false
-        manager = CBCentralManager(delegate: self, queue: nil, options: dic)
+    var statusItem:NSStatusItem?
+    
+    func setStatusItem(menu: NSStatusItem){
+        statusItem = menu
+         manager = CBCentralManager(delegate: self, queue: nil)
     }
     
-    func getIcon(forValue: Int) -> NSImage? {
+    func getIcon(forValue: UInt8) -> NSImage? {
         var ImageName = "statusNone"
         switch(forValue){
         case 0:
@@ -52,22 +57,35 @@ class MXMasterBluetoothAPI: NSObject, CBCentralManagerDelegate, CBPeripheralDele
         
     }
     
+    func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        if (manager.state == .poweredOn){
+            print("*** BLE powered on and ready ***")
+            // scan for any peripheral with any service.
+            // centralManager.scanForPeripherals(withServices: nil, options: nil)
+            // calls centralManager(_:didDiscover:advertisementData:rssi)
+            
+            // scan for specific peripherals with specific services
+            // use option [CBCentralManagerScanOptionAllowDuplicatesKey:true] to see each broudcast
+            
+                scanBLEDevice()
+            
+        } else {
+            print("*** BLE not on ***")
+            return
+        }
+        
+    }
+    
     func scanBLEDevice(){
         print("starting scan")
-        let MXMasterBattery = CBUUID(string: "2A19")
-        let MXMaster=UUID(uuidString: "A2370BF4-32AB-4C4F-B355-EA058139E2D9")
-        //manager?.scanForPeripherals(withServices: nil, options: nil)
-        //var periferals = manager?.retrieveConnectedPeripherals(withServices: [])
-        var periferals = manager?.retrievePeripherals(withIdentifiers: [MXMaster!])
-        manager?.connect(periferals![0], options: [CBConnectPeripheralOptionNotifyOnDisconnectionKey : true])
-        print(periferals);
-        print("")
-        
-        
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 60.0) {
-//            self.stopScanForBLEDevice()
-//        }
-        
+        let a = manager.retrieveConnectedPeripherals(withServices: [MXMasterService])
+        print(a)
+        if (a.count<1){
+            manager.scanForPeripherals(withServices: nil, options: nil)
+        } else {
+            manager.connect(a[0], options: nil)
+            savedPeripheral = a[0]
+        }
     }
     func stopScanForBLEDevice(){
         manager?.stopScan()
@@ -76,24 +94,22 @@ class MXMasterBluetoothAPI: NSObject, CBCentralManagerDelegate, CBPeripheralDele
     
     //CBCentralManagerDelegate code
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-        print("Peripheral found!")
-        print(advertisementData)
+        // a peripheral was discovered
+        print("DidDiscover: \(peripheral)\n****************************")
+
         
     }
     func centralManager(_ central: CBCentralManager, didRetrieveConnectedPeripherals peripherals: [CBPeripheral]) {
         print("Got something")
         print(peripherals)
     }
-    func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        print("StateUpdated")
-        print(central.state)
-    }
+    
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         // pass reference to connected peripheral to parentview
         
-        savedPeripheral = peripheral
-        savedPeripheral!.delegate=self
-        savedPeripheral!.discoverServices(nil)
+        peripheral.delegate=self
+        peripheral.discoverServices(nil)
+        
         
         print("connected!")
         print(savedPeripheral as Any)
@@ -110,7 +126,64 @@ class MXMasterBluetoothAPI: NSObject, CBCentralManagerDelegate, CBPeripheralDele
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         print("found services")
-        print(peripheral.services as Any)
+        if let error = error {
+            print("error discovering services: \(error)")
+            return
+        }
+
+        if let services = peripheral.services {
+            print("Found \(services.count) services!\n****************************")
+            
+            for service in services {
+                //print("service: \(service)")
+                if service.uuid == MXMasterBatteryService {
+                    print("*** found MX Master Battery Service ***")
+                    print("service: \(service)")
+                    peripheral.discoverCharacteristics(nil, for: service)
+                    // calls peripheral(_:didDiscoverCharacteristicsFor:error)
+                }
+            }
+        }
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+        print("peripheral(_:didDiscoverCharacteristicsFor:error)")
+        
+        if let error = error {
+            print("error discovering characteristics: \(error)")
+            return
+        }
+        
+        if let characteristics = service.characteristics {
+            for characteristic in characteristics {
+                if characteristic.uuid == MXMasterBatteryCharacteristic {
+                    print("*** found MX MXaster Battery Characteristic ***")
+                    print("UUID: \(characteristic.uuid)")
+                    // subscribe to the characteristic
+                    peripheral.readValue(for: characteristic)
+                    peripheral.setNotifyValue(true, for: characteristic)
+                    // calls peripheral(_:didUpdateValueFor:error)
+                }
+            }
+        }
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        // the value that we subscribed to was updated
+        print("peripheral(_:didUpdateValueFor:error)")
+        
+        if let error = error {
+            print("error reading characteristic: \(error)")
+            return
+        }
+        
+        if let theValue = characteristic.value {
+            let theRealValue = theValue[0]
+            print(theRealValue)
+            let icon = getIcon(forValue: theRealValue)
+            statusItem!.image = icon
+            
+        }
     }
     
 //    func peripheral(
